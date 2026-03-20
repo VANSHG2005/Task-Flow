@@ -20,7 +20,7 @@ export default function LoginPage() {
       toast.success('Welcome back!')
       navigate('/dashboard')
     } catch (err) {
-      toast.error(err.response?.data?.message || 'Login failed')
+      toast.error(err.response?.data?.message || 'Login failed. Please try again.')
     } finally {
       setLoading(false)
     }

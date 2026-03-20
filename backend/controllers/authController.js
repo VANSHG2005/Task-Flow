@@ -48,7 +48,12 @@ const login = async (req, res, next) => {
 
     const user = await User.findOne({ email }).select('+password');
     if (!user || !(await user.matchPassword(password))) {
-      return res.status(401).json({ success: false, message: 'Invalid email or password' });
+      return res.status(401).json({ 
+        success: false, 
+        message: !user 
+          ? 'No account found with this email. Please register first.' 
+          : 'Incorrect password. Please try again.'
+      })
     }
 
     const token = generateToken(user._id);
