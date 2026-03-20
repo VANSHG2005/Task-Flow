@@ -50,20 +50,30 @@ export function AuthProvider({ children }) {
 
   const login = async (credentials) => {
     dispatch({ type: 'SET_LOADING', payload: true })
-    const { data } = await authService.login(credentials)
-    localStorage.setItem('token', data.token)
-    localStorage.setItem('user', JSON.stringify(data.user))
-    dispatch({ type: 'LOGIN_SUCCESS', payload: { user: data.user, token: data.token } })
-    return data
+    try {
+      const { data } = await authService.login(credentials)
+      localStorage.setItem('token', data.token)
+      localStorage.setItem('user', JSON.stringify(data.user))
+      dispatch({ type: 'LOGIN_SUCCESS', payload: { user: data.user, token: data.token } })
+      return data
+    } catch (err) {
+      dispatch({ type: 'SET_LOADING', payload: false })
+      throw err
+    }
   }
 
   const register = async (userData) => {
     dispatch({ type: 'SET_LOADING', payload: true })
-    const { data } = await authService.register(userData)
-    localStorage.setItem('token', data.token)
-    localStorage.setItem('user', JSON.stringify(data.user))
-    dispatch({ type: 'LOGIN_SUCCESS', payload: { user: data.user, token: data.token } })
-    return data
+    try {
+      const { data } = await authService.register(userData)
+      localStorage.setItem('token', data.token)
+      localStorage.setItem('user', JSON.stringify(data.user))
+      dispatch({ type: 'LOGIN_SUCCESS', payload: { user: data.user, token: data.token } })
+      return data
+    } catch (err) {
+      dispatch({ type: 'SET_LOADING', payload: false })
+      throw err
+    }
   }
 
   const logout = () => {
